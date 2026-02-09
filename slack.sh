@@ -21,7 +21,10 @@
 
 set -euo pipefail
 
+# Resolve through symlinks so companion files are found when registered via el
+SCRIPT_DIR="$(cd "$(dirname "$(readlink "$0" 2>/dev/null || echo "$0")")" && pwd)"
+
 PORT="${1:-9999}"
 BOT_ID="${2:-${SLACK_BOT_ID:-}}"
 
-exec python3 "$(dirname "$0")/slack-listener.py" "$PORT" "$BOT_ID"
+exec python3 "$SCRIPT_DIR/slack-listener.py" "$PORT" "$BOT_ID"
