@@ -1,0 +1,19 @@
+{
+  "name": "el-slack",
+  "version": "1.0.0",
+  "description": "Slack event source for the el plugin. Listen for Slack messages via webhook.",
+  "author": {
+    "name": "Tim Garthwaite",
+    "url": "https://github.com/mividtim"
+  },
+  "repository": "https://github.com/mividtim/claude-code-el-slack",
+  "license": "MIT",
+  "keywords": ["el", "slack", "webhook", "events"],
+  "dependencies": {
+    "el": {
+      "marketplace": "mividtim",
+      "source": "mividtim/claude-code-event-listeners",
+      "version": ">=0.7.0"
+    }
+  }
+}

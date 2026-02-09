@@ -5,9 +5,13 @@ Community event source for [claude-code-event-listeners](https://github.com/mivi
 ## Install
 
 ```bash
-# Clone and register with the event listeners plugin
+# From the marketplace (recommended — auto-discovers, pulls in el as dependency)
+claude plugin marketplace add mividtim/claude-code-el-slack
+claude plugin install el-slack
+
+# Or manually register the source
 git clone https://github.com/mividtim/claude-code-el-slack.git
-/el:register ./claude-code-el-slack/slack.sh
+/el:register ./claude-code-el-slack/sources.d/slack.sh
 ```
 
 ## Prerequisites

@@ -2,7 +2,9 @@
 # slack — One-shot Slack event listener for Claude Code.
 #
 # Community event source for claude-code-event-listeners.
-# Install: /el:register ./slack.sh
+# Install: claude plugin marketplace add mividtim/claude-code-el-slack
+#          claude plugin install el-slack
+# Or manually: /el:register ./sources.d/slack.sh
 #
 # Listens on 0.0.0.0:PORT for Slack webhook events behind an ngrok tunnel.
 # Filters out bot self-messages, old events (watermark), duplicates, and edits.
