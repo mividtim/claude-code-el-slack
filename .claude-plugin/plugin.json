@@ -1,7 +1,7 @@
 {
   "name": "el-slack",
-  "version": "1.0.0",
-  "description": "Slack event source for the el plugin. Listen for Slack messages via webhook.",
+  "version": "2.0.0",
+  "description": "Slack event source for the el plugin. Drains Slack events from el-sidecar with signature verification, filtering, and conversations.history polling.",
   "author": {
     "name": "Tim Garthwaite",
     "url": "https://github.com/mividtim"

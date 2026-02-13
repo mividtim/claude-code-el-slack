@@ -1,32 +1,34 @@
 #!/bin/bash
-# slack — One-shot Slack event listener for Claude Code.
+# slack — Slack event source for Claude Code (sidecar processor mode).
 #
 # Community event source for claude-code-event-listeners.
 # Install: claude plugin marketplace add mividtim/claude-code-el-slack
 #          claude plugin install el-slack
 # Or manually: /el:register ./sources.d/slack.sh
 #
-# Listens on 0.0.0.0:PORT for Slack webhook events behind an ngrok tunnel.
-# Filters out bot self-messages, old events (watermark), duplicates, and edits.
-# Outputs clean event JSON to stdout on the first real message, then exits.
+# Runs slack-processor.py which drains raw events from el-sidecar,
+# processes them (signature verification, filtering, dedup), and
+# outputs clean JSONL to stdout. The processor handles sidecar
+# unavailability with exponential backoff.
 #
-# Args: [port=9999] [bot-id=]
-# Env:  SLACK_BOT_ID (alternative to bot-id arg)
-#       SLACK_WATERMARK_FILE (default: /tmp/slack-webhook-watermark)
+# Env:  SLACK_SIGNING_SECRET (for webhook signature verification)
+#       SLACK_BOT_ID (for self-filtering)
+#       SLACK_TOKEN (optional, for conversations.history polling)
+#       SLACK_CHANNEL (optional, for conversations.history polling)
+#       SIDECAR_URL (default: http://localhost:9999)
+#       SLACK_WATERMARK_FILE (default: /tmp/el-slack-agent-watermark)
 #       SLACK_SEEN_IDS_FILE (default: /tmp/slack-webhook-seen-ids)
+#       SLACK_POLL_INTERVAL (default: 60, 0=disabled)
 #
-# Requires: python3, ngrok running separately (forwarding to PORT)
+# Requires: python3, el-sidecar running (processor retries if not)
 #
 # Event Source Protocol:
-#   Blocks until a real Slack message arrives.
-#   Outputs JSON: {"user": "...", "text": "...", "ts": "...", "channel": "...", ...}
+#   Outputs JSONL continuously: one JSON object per line.
+#   {"user": "...", "text": "...", "ts": "...", "channel": "...", ...}
 
 set -euo pipefail
 
 # Resolve through symlinks so companion files are found when registered via el
 SCRIPT_DIR="$(cd "$(dirname "$(readlink "$0" 2>/dev/null || echo "$0")")" && pwd)"
 
-PORT="${1:-9999}"
-BOT_ID="${2:-${SLACK_BOT_ID:-}}"
-
-exec python3 "$SCRIPT_DIR/slack-listener.py" "$PORT" "$BOT_ID"
+exec python3 "$SCRIPT_DIR/slack-processor.py"
