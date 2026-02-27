@@ -1,7 +1,7 @@
 {
   "name": "el-slack",
-  "version": "2.0.0",
-  "description": "Slack event source for the el plugin. Drains Slack events from el-sidecar with signature verification, filtering, and conversations.history polling.",
+  "version": "3.0.0",
+  "description": "Slack sidecar plugin for el — webhook ingestion, conversation polling, bot filtering, watermark management. Self-registers with el-sidecar v0.9.0+.",
   "author": {
     "name": "Tim Garthwaite",
     "url": "https://github.com/mividtim"
