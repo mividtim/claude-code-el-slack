@@ -1,6 +1,6 @@
 {
   "name": "el-slack",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Slack sidecar plugin for el — webhook ingestion, conversation polling, bot filtering, watermark management. Self-registers with el-sidecar v0.9.0+.",
   "author": {
     "name": "Tim Garthwaite",

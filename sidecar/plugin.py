@@ -213,7 +213,23 @@ def handle_webhook(handler):
     except ValueError:
         pass
 
-    _ingest_message(event, fallback_channel=SLACK_CHANNEL)
+    # Use already-filtered msg directly — don't call _ingest_message()
+    # which would double-filter and reject via client_msg_id dedup.
+    if not msg.get('channel') and SLACK_CHANNEL:
+        msg['channel'] = SLACK_CHANNEL
+
+    inserted = _sidecar['insert_event'](
+        source='slack',
+        ts=msg.get('ts', ''),
+        user_id=msg.get('user', ''),
+        text=msg.get('text', ''),
+        channel=msg.get('channel', ''),
+        type=msg.get('type', ''),
+        thread_ts=msg.get('thread_ts', ''),
+        bot_id=msg.get('bot_id', ''),
+    )
+    if inserted:
+        _sidecar['notify_waiters']()
 
 
 # ---------------------------------------------------------------------------
